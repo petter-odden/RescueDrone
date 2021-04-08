@@ -2,5 +2,7 @@
     <string name="app_name">RescueDrone</string>
     <string name="password">Password</string>
     <string name="email_address">Email Address</string>
-    <string name="login">Login</string>
+    <string name="login">Log in</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="register">Register</string>
 </resources>
