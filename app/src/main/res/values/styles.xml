@@ -5,4 +5,13 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorHint">@color/white</item>
     </style>
+
+    <style name="DemoTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/black</item>
+
+        <!-- Defining that new color in ColorPrimaryDark -->
+        <item name="colorPrimaryDark">@color/semi_trans_black</item>
+        <item name="colorAccent">@color/semi_trans_black</item>
+    </style>
 </resources>
