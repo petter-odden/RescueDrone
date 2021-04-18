@@ -1,6 +1,6 @@
 package View
 
-import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Paint
 import android.os.Bundle
@@ -46,8 +46,8 @@ class FragmentRegister : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register, container, false)
@@ -58,8 +58,12 @@ class FragmentRegister : Fragment() {
 
         //region Instansiering
         auth = FirebaseAuth.getInstance()
-        val nameFieldLayout : TextInputLayout = getView()!!.findViewById(R.id.nameError)
-        val nameField : TextInputEditText = getView()!!.findViewById(R.id.name_field)
+
+        val firstNameLayout : TextInputLayout = getView()!!.findViewById(R.id.firstNameError)
+        val firstNameField : TextInputEditText = getView()!!.findViewById(R.id.first_name_field)
+
+        val lastNameLayout : TextInputLayout = getView()!!.findViewById(R.id.lastNameError)
+        val lastNameField : TextInputEditText = getView()!!.findViewById(R.id.last_name_field)
 
         val emailFieldLayout : TextInputLayout = getView()!!.findViewById(R.id.emailError)
         val emailField : TextInputEditText = getView()!!.findViewById(R.id.email_field)
@@ -77,9 +81,9 @@ class FragmentRegister : Fragment() {
         // Knapp til frontpage fragment
         logo.setOnClickListener{
             fragmentManager!!.beginTransaction().replace(
-                R.id.fragmentContainer,
-                FragmentFrontpage(),
-                "FragmentFrontpage"
+                    R.id.fragmentContainer,
+                    FragmentFrontpage(),
+                    "FragmentFrontpage"
             ).addToBackStack(null).commit()
 
         }
@@ -87,23 +91,32 @@ class FragmentRegister : Fragment() {
         // Knapp til login fragment
         goToLoginButton.setOnClickListener{
             fragmentManager!!.beginTransaction().replace(
-                R.id.fragmentContainer,
-                FragmentLogin(),
-                "FragmentLogin"
+                    R.id.fragmentContainer,
+                    FragmentLogin(),
+                    "FragmentLogin"
             ).addToBackStack(null).commit()
         }
 
         // Register knapp
         registerButton.setOnClickListener {
 
+            firstNameLayout.error = null
+            lastNameLayout.error = null
+            emailFieldLayout.error = null
+            passwordFieldLayout.error = null
+
             var fieldCheck = true
 
-            if(TextUtils.isEmpty(nameField.text)) {
-                nameFieldLayout.error = " Please Enter Name";
+            if(TextUtils.isEmpty(firstNameField.text)) {
+                firstNameLayout.error = "Please Enter First Name";
+                fieldCheck = false
+            }
+            if (TextUtils.isEmpty(lastNameField.text)) {
+                lastNameLayout.error = "Please Enter Last Name"
                 fieldCheck = false
             }
             if(TextUtils.isEmpty(emailField.text)) {
-                emailFieldLayout.error = " Please Enter Email Address";
+                emailFieldLayout.error = "Please Enter Email Address";
                 fieldCheck = false
                 // Todo: Sjekke at email format er riktig, abc@noe.io
             }
@@ -117,11 +130,15 @@ class FragmentRegister : Fragment() {
             }
 
             registerButton.startAnimation()
+
+            val fName = firstNameField.text.toString().trim()
+            val lName = lastNameField.text.toString().trim()
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
 
             try {
-                (activity as LoginRegister).registerUser(email, password)
+                registerButton.doneLoadingAnimation(2, bitmap)
+                (activity as LoginRegister).registerUser(email, password, fName, lName)
 
             } catch (e: Exception) {
                 Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
@@ -135,11 +152,19 @@ class FragmentRegister : Fragment() {
         goToLoginButton.setPaintFlags(goToLoginButton.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
 
         // Kosmetisk kos for hint text
-        nameField.setOnFocusChangeListener { _, hasFocus ->
+        firstNameField.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
-                nameField.hint = ""
+                firstNameField.hint = ""
             else
-                nameField.hint = "Full Name"
+                firstNameField.hint = "Full Name"
+        }
+
+        // Kosmetisk kos for hint text
+        lastNameField.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus)
+                lastNameField.hint = ""
+            else
+                lastNameField.hint = "Full Name"
         }
 
         // Kosmetisk kos for hint text
@@ -159,11 +184,6 @@ class FragmentRegister : Fragment() {
         }
 
         //endregion
-
-
-
-
-
 
     }
 
@@ -187,9 +207,3 @@ class FragmentRegister : Fragment() {
             }
     }
 }
-
-public fun getNameReg() {}
-
-public fun getEmailReg() {}
-
-public fun getPassReg() {}

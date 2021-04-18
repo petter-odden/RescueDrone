@@ -3,42 +3,53 @@ package View
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.rescuedrone.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-private lateinit var auth: FirebaseAuth
 
 
 class MainActivity : AppCompatActivity() {
 
+    private var auth: FirebaseAuth = Firebase.auth
+    private lateinit var database: DatabaseReference
+    private val TAG = "MainActivity"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        auth = Firebase.auth
+        database = Firebase.database.reference
         val user = auth.currentUser
+
         val btnLogout : Button = findViewById(R.id.logout_button)
-        val uidDisplay : TextView = findViewById(R.id.display_uid)
+        val firstNameDisplay : TextView = findViewById(R.id.display_first_name)
+        val lastNameDisplay : TextView = findViewById(R.id.display_last_name)
         val emailDisplay : TextView = findViewById(R.id.display_email)
-        val userId = intent.getStringExtra("user_id")
-        val userEmail = intent.getStringExtra("user_email")
 
-        uidDisplay.text = "User ID : $userId"
-        emailDisplay.text = "User Email : $userEmail"
-
-        if (userId == null || userEmail == null) {
-            uidDisplay.text = "User ID: \n" + user?.uid
-            emailDisplay.text = "Email address: \n" + user?.email
-        }
+        val reference = FirebaseDatabase.getInstance().reference.child("users").child(user?.uid.toString())
+//        val userListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                val dbUser = dataSnapshot.getValue<User>()
+//                firstNameDisplay.text = dbUser?.first_name
+//                lastNameDisplay.text = dbUser?.last_name
+//                emailDisplay.text = dbUser?.email_address
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+//            }
+//        }
+//        reference.addValueEventListener(userListener)
 
         btnLogout.setOnClickListener() {
             logOut()
@@ -64,4 +75,6 @@ class MainActivity : AppCompatActivity() {
 
         startActivity(intent)
     }
+
+
 }

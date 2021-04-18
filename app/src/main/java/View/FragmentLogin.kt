@@ -1,24 +1,25 @@
 package View
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.rescuedrone.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlin.math.log
 
 // Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
-private val userEmail = ""
-private val userPassword = ""
 
 /**
  * A simple [Fragment] subclass.
@@ -52,8 +53,14 @@ class FragmentLogin : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_done_white_48dp)
+
+        val emailFieldLayout : TextInputLayout = getView()!!.findViewById(R.id.emailError)
         val emailField : TextInputEditText = getView()!!.findViewById(R.id.email_field)
+
+        val passwordFieldLayout : TextInputLayout = getView()!!.findViewById(R.id.passwordError)
         val passwordField : TextInputEditText = getView()!!.findViewById(R.id.password_field)
+
         val loginButton : CircularProgressButton = getView()!!.findViewById(R.id.login_button)
         val goToRegisterButton : TextView = getView()!!.findViewById(R.id.btnGoToRegister)
         val logo : AppCompatImageView = getView()!!.findViewById(R.id.logo)
@@ -84,9 +91,42 @@ class FragmentLogin : Fragment() {
                 passwordField.hint = "Password"
         }
 
-        //Kosmetisk kos for login knapp
+        //Login knapp
         loginButton.setOnClickListener {
+
+            emailFieldLayout.error = null
+            passwordFieldLayout.error = null
+
+            var fieldCheck = true
+
+            if(TextUtils.isEmpty(emailField.text)) {
+                emailFieldLayout.error = "Please Enter Email Address";
+                fieldCheck = false
+                // Todo: Sjekke at email format er riktig, abc@noe.io
+            }
+            if(TextUtils.isEmpty(passwordField.text)){
+                passwordFieldLayout.error = "Please Choose a Password"
+                fieldCheck = false
+                // Todo: Lage strengere krav for passord?
+            }
+            if(!fieldCheck) {
+                return@setOnClickListener
+            }
+
             loginButton.startAnimation()
+
+            val email = emailField.text.toString().trim()
+            val password = passwordField.text.toString().trim()
+
+            try {
+                loginButton.doneLoadingAnimation(2, bitmap)
+                (activity as LoginRegister).loginUser(email, password)
+
+            } catch (e: Exception) {
+                Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
+                loginButton.revertAnimation()
+            }
+
         }
     }
 
@@ -110,8 +150,3 @@ class FragmentLogin : Fragment() {
             }
     }
 }
-
-public fun getEmail() {
-    return
-}
-public fun getPassword() {}

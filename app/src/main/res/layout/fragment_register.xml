@@ -22,20 +22,49 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/logo">
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nameError"
+            android:id="@+id/firstNameError"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
+
+            android:background="@drawable/bg_button"
+            android:textColorHint="@color/white"
+            app:errorEnabled="true"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/first_name_field"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="26dp"
+                android:background="#00FF0000"
+                android:drawableEnd="@drawable/ic_person"
+                android:fontFamily="@font/montserrat_light"
+                android:gravity="center"
+                android:hint="@string/first_name"
+                android:inputType="textPersonName"
+
+                android:textColorHint="@color/white" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lastNameError"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:layout_marginTop="16dp"
 
 
@@ -45,7 +74,7 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name_field"
+                android:id="@+id/last_name_field"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="26dp"
@@ -53,9 +82,8 @@
                 android:drawableEnd="@drawable/ic_person"
                 android:fontFamily="@font/montserrat_light"
                 android:gravity="center"
-                android:hint="@string/full_name"
+                android:hint="@string/last_name"
                 android:inputType="textPersonName"
-
                 android:textColorHint="@color/white" />
 
 
@@ -66,7 +94,7 @@
             android:id="@+id/emailError"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:layout_marginTop="16dp"
 
             android:background="@drawable/bg_button"
@@ -97,7 +125,7 @@
             android:id="@+id/passwordError"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:layout_marginTop="16dp"
 
 
@@ -129,7 +157,7 @@
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/register_button"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
 
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
@@ -149,13 +177,14 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textView"
