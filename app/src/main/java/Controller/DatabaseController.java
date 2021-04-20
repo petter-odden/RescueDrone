@@ -14,26 +14,24 @@ import Model.Person;
 
 public class DatabaseController {
     static public HashMap<String, Person> readJSONFromFile(File filePath)  {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        ObjectMapper objectMapper = new ObjectMapper(); //This makes objects out of the json
 
 
-        Person[] personArray = new Person[0];
+        Person[] personArray = new Person[0];   //Array to keep the objects
 
        try {
-            personArray = objectMapper.readValue(filePath, Person[].class);
+            personArray = objectMapper.readValue(filePath, Person[].class); //filePath can be any file or value as long as it is in JSON format
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
         HashMap<String, Person> personHashMap = new HashMap<>();
 
-        for (Person planetSystem : personArray) {
-            personHashMap.put(planetSystem.getName(), planetSystem);
+        for (Person person : personArray) {   //Puts the values in a hashmap with their UID as key
+            personHashMap.put(person.getUID(), person);
         }
         return personHashMap;
     }
-    static public HashMap<String, Person> readJSONFromFile(String path){
+    static public HashMap<String, Person> readJSONFromFile(String path){    //Version with just takes a string filepath as the input
         File pathFile = new File(path);
         return readJSONFromFile(pathFile);
     }
