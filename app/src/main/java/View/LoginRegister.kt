@@ -112,7 +112,7 @@ class LoginRegister : AppCompatActivity() {
         // Todo: Få denne dritten til å funke
         //user = User(fName, lName, email)
         database = FirebaseDatabase.getInstance().getReference("Users").child(userId)
-        database.child("users").child(userId).setValue(user)
+        database.setValue(user)
     }
 
 

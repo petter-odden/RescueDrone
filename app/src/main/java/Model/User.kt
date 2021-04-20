@@ -9,6 +9,4 @@ data class User(val fName: String? = null, val lName: String? = null, val email:
     val firstName = fName?.capitalize(Locale.ROOT)
     val lastName = lName?.capitalize(Locale.ROOT)
     val emailAddress = email
-
-
 }
