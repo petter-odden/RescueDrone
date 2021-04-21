@@ -6,7 +6,7 @@ import java.util.Hashtable;
 
 public class Assignment {
     private String UID;
-    private EmergencyPersonnel creatorPerson;
+    private Person creatorPerson;
     private LocalDate creationTime;
 
     private boolean lookingForPeople;
