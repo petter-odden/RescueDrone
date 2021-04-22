@@ -10,10 +10,8 @@
         android:supportsRtl="true"
 
         android:theme="@style/Theme.RescueDrone">
-        <activity android:name="View.UserProfile"></activity>
-        <activity
-            android:name="View.LoginRegister"
-            android:screenOrientation = "portrait">
+        <activity android:name="View.UserProfileActivity"/>
+        <activity android:name="View.LoginRegister">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +21,8 @@
 
         </activity>
         <activity android:name="View.MainActivity"/>
+        <activity android:name="View.HomeActivity"/>
+        <activity android:name="View.MissionActivity"/>
 
     </application>
 

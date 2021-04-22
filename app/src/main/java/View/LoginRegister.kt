@@ -6,13 +6,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
+import android.webkit.WebViewFragment
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import com.example.rescuedrone.R
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
@@ -37,6 +41,8 @@ class LoginRegister : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         // Usynliggjør statusbar og toolbar
         val w: Window = window
@@ -103,6 +109,7 @@ class LoginRegister : AppCompatActivity() {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
                         Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+
                     }
                 }
 
@@ -111,7 +118,8 @@ class LoginRegister : AppCompatActivity() {
     fun writeNewUser(userId: String, user: User) {
         // Todo: Få denne dritten til å funke
         //user = User(fName, lName, email)
-        database = FirebaseDatabase.getInstance().getReference("Users").child(userId)
+
+        database = FirebaseDatabase.getInstance("https://rescuedrone-6c5d7-default-rtdb.europe-west1.firebasedatabase.app/").getReference("users").child(userId)
         database.setValue(user)
     }
 

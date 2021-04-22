@@ -25,10 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/summit_inline_regular"
+        android:fontFamily="@font/bebas_neue"
         android:text="@string/motto"
-        android:textSize="30sp"
+        android:textSize="40sp"
         android:textAlignment="center"
+        android:textColor="@color/white"
         android:ellipsize="end"
         android:shadowColor="#55000000"
         android:shadowDx="6"
@@ -52,7 +53,7 @@
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/btnGoToLogin"
             android:layout_width="240dp"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:layout_marginBottom="30dp"
 
             android:background="@drawable/login_button"
@@ -69,7 +70,7 @@
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/btnGoToRegister"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
 
             android:background="@drawable/login_button"
 
@@ -102,6 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="@string/need_assistance"
+            android:textColor="@color/white"
             android:ellipsize="end"
             android:shadowColor="#55000000"
             android:shadowDx="6"
@@ -113,7 +115,7 @@
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/btnSos"
             android:layout_width="300dp"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
 
             android:background="@drawable/sos_button"
             android:fontFamily="@font/montserrat_regular"

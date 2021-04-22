@@ -118,14 +118,9 @@ class FragmentLogin : Fragment() {
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
 
-            try {
-                loginButton.doneLoadingAnimation(2, bitmap)
-                (activity as LoginRegister).loginUser(email, password)
-
-            } catch (e: Exception) {
-                Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
-                loginButton.revertAnimation()
-            }
+            (activity as LoginRegister).loginUser(email, password)
+            // TODO: Fix the button animation
+            loginButton.revertAnimation()
 
         }
     }

@@ -1,3 +1,4 @@
+
 package Controller;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -19,7 +20,7 @@ public class DatabaseController {
 
         Person[] personArray = new Person[0];   //Array to keep the objects
 
-       try {
+        try {
             personArray = objectMapper.readValue(filePath, Person[].class); //filePath can be any file or value as long as it is in JSON format
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -31,6 +32,7 @@ public class DatabaseController {
         }
         return personHashMap;
     }
+
     static public HashMap<String, Person> readJSONFromFile(String path){    //Version with just takes a string filepath as the input
         File pathFile = new File(path);
         return readJSONFromFile(pathFile);

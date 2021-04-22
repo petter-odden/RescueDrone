@@ -16,4 +16,11 @@
     <string name="full_name">Full Name</string>
     <string name="log_out">Log out</string>
     <string name="user_id">User ID</string>
+    <string name="home">Home</string>
+    <string name="missions">Missions</string>
+    <string name="profile">Profile</string>
+    <string name="dronehub">Dronehub</string>
+    <string name="user_profile">User Profile</string>
+    <string name="change">Change</string>
+    <string name="change_password">Change Password</string>
 </resources>

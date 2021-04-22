@@ -17,6 +17,7 @@ import com.example.rescuedrone.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import java.util.*
 
 
 // Rename parameter arguments, choose names that match
@@ -74,7 +75,6 @@ class FragmentRegister : Fragment() {
         val registerButton : CircularProgressButton = getView()!!.findViewById(R.id.register_button)
         val goToLoginButton : TextView = getView()!!.findViewById(R.id.btnGoToLogin)
         val logo : AppCompatImageView = getView()!!.findViewById(R.id.logo)
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_done_white_48dp)
 
         //endregion
 
@@ -131,19 +131,14 @@ class FragmentRegister : Fragment() {
 
             registerButton.startAnimation()
 
-            val fName = firstNameField.text.toString().trim()
-            val lName = lastNameField.text.toString().trim()
+            val fName = firstNameField.text.toString().trim().capitalize(Locale.ROOT)
+            val lName = lastNameField.text.toString().trim().capitalize(Locale.ROOT)
             val email = emailField.text.toString().trim()
-            val password = passwordField.text.toString().trim()
+            val password = passwordField.text.toString()
 
-            try {
-                registerButton.doneLoadingAnimation(2, bitmap)
-                (activity as LoginRegister).registerUser(email, password, fName, lName)
+            (activity as LoginRegister).registerUser(email, password, fName, lName)
 
-            } catch (e: Exception) {
-                Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
-                registerButton.revertAnimation()
-            }
+            registerButton.revertAnimation()
 
         }
 
@@ -186,6 +181,15 @@ class FragmentRegister : Fragment() {
         //endregion
 
     }
+
+    fun displayDoneAnimation() {
+
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_done_white_48dp)
+        val registerButton : CircularProgressButton = view!!.findViewById(R.id.register_button)
+        registerButton.doneLoadingAnimation(2, bitmap)
+
+    }
+
 
     companion object {
         /**
