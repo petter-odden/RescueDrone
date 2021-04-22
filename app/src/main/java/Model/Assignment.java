@@ -6,22 +6,50 @@ import java.util.Hashtable;
 
 public class Assignment {
     private String UID;
-    private EmergencyPersonnel creatorPerson;
+    private Person creatorPerson;
     private LocalDate creationTime;
 
     private boolean lookingForPeople;
     private boolean hideAssignment;
 
+    private int priorityLevel;
+
     private HashMap<String, Person> hiredPeople;
 
-    public Assignment(String UID, EmergencyPersonnel creatorPerson, LocalDate creationTime, boolean lookingForPeople, boolean hideAssignment) {
+    public Assignment(String UID, Person creatorPerson, LocalDate creationTime, boolean lookingForPeople, boolean hideAssignment, int priorityLevel) {
         this.UID = UID;
         this.creatorPerson = creatorPerson;
         this.creationTime = creationTime;
         this.lookingForPeople = lookingForPeople;
         this.hideAssignment = hideAssignment;
 
-        this.hiredPeople = new HashMap<String, Person>();
+        this.hiredPeople = new HashMap<>();
+
+        //PriorityLevel is always set to the lowest level if the user isn't an emergencyPersonell
+        if (creatorPerson instanceof EmergencyPersonnel){
+            this.priorityLevel = priorityLevel;
+        }
+        else{
+            this.priorityLevel = 3;
+        }
+    }
+
+    public Assignment(String UID, Person creatorPerson, LocalDate creationTime, boolean lookingForPeople, boolean hideAssignment) {
+        this.UID = UID;
+        this.creatorPerson = creatorPerson;
+        this.creationTime = creationTime;
+        this.lookingForPeople = lookingForPeople;
+
+        this.hiredPeople = new HashMap<>();
+        this.priorityLevel  = 0;
+    }
+
+    public int getPriorityLevel() {
+        return priorityLevel;
+    }
+
+    public void setPriorityLevel(int priorityLevel) {
+        this.priorityLevel = priorityLevel;
     }
 
     public String getUID() {
@@ -32,11 +60,11 @@ public class Assignment {
         this.UID = UID;
     }
 
-    public EmergencyPersonnel getCreatorPerson() {
+    public Person getCreatorPerson() {
         return creatorPerson;
     }
 
-    public void setCreatorPerson(EmergencyPersonnel creatorPerson) {
+    public void setCreatorPerson(Person creatorPerson) {
         this.creatorPerson = creatorPerson;
     }
 
