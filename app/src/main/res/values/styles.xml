@@ -46,4 +46,8 @@
         <item name="cornerSize">4dp</item>
     </style>
 
+    <style name="AppTheme.Picker" parent="Theme.RescueDrone" >
+        <item name="android:textColorPrimary">@android:color/black</item>
+    </style>
+
 </resources>

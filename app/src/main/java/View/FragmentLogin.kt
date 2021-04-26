@@ -44,9 +44,6 @@ class FragmentLogin : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-
-
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
@@ -134,7 +131,7 @@ class FragmentLogin : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment FragmentLogin.
          */
-        // TODO: Rename and change types and number of parameters
+        // Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             FragmentLogin().apply {

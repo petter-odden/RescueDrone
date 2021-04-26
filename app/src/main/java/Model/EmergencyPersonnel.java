@@ -1,8 +1,8 @@
 package Model;
 
-public class EmergencyPersonnel extends Person {
+public class EmergencyPersonnel extends User {
 
-    public EmergencyPersonnel(String name, String UID, String username) {
-        super(name, UID, username);
+    public EmergencyPersonnel(String fname, String lname, String email) {
+        super(fname, lname, email);
     }
 }

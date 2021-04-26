@@ -46,7 +46,7 @@ class UserProfileActivity : AppCompatActivity() {
 
         val nameListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataSnapshot.getValue()
+                dataSnapshot.value
                 val dbUser = dataSnapshot.getValue<User>()
                 updateUI(dbUser)
             }

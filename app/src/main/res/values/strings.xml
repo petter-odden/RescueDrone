@@ -23,4 +23,10 @@
     <string name="user_profile">User Profile</string>
     <string name="change">Change</string>
     <string name="change_password">Change Password</string>
+    <string name="title_activity_create_mission">CreateMissionActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 </resources>

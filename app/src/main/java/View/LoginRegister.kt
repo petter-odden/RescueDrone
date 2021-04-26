@@ -6,17 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import android.webkit.WebViewFragment
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
 import com.example.rescuedrone.R
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
@@ -31,7 +28,7 @@ class LoginRegister : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if(currentUser != null){
-            val intent = Intent(this, MainActivity::class.java).apply {
+            val intent = Intent(this, UserProfileActivity::class.java).apply {
                 //putExtra(EXTRA_MESSAGE, message)
             }
             startActivity(intent)
@@ -52,11 +49,7 @@ class LoginRegister : AppCompatActivity() {
         )
 
         // Fragment kos
-        supportFragmentManager.beginTransaction().add(
-                R.id.fragmentContainer,
-                FragmentFrontpage(),
-                "FragmentFrontpage"
-        ).commit()
+        supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, FragmentFrontpage(), "FragmentFrontpage").commit()
     }
 
     fun registerUser(email: String, password: String, fName: String, lName: String) {
