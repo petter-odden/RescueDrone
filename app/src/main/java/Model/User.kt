@@ -6,5 +6,5 @@ import java.util.*
 
 @IgnoreExtraProperties
 
-open class User(val fname: String? = null, val lname: String? = null, val email: String? = null) : Serializable {
+open class User(val fname: String? = null, val lname: String? = null, val email: String? = null, val UID: String, val confirmedPilot: Boolean) : Serializable {
 }
