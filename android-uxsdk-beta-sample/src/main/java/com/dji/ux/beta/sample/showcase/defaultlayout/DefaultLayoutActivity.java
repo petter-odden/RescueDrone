@@ -113,7 +113,7 @@ public class DefaultLayoutActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         setM200SeriesWarningLevelRanges();
-        mapWidget.initAMap(map -> {
+        mapWidget.initGoogleMap(map -> {
             map.setOnMapClickListener(latLng -> onViewClick(mapWidget));
             map.getUiSettings().setZoomControlsEnabled(false);
         });

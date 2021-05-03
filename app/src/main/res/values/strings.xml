@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">RescueDrone</string>
+    <string name="password">Password</string>
+    <string name="email_address">Email Address</string>
+    <string name="login">Log in</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="register">Register</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="account_question">Already have an account?</string>
+    <string name="motto">DRONE AERIAL ASSISTANCE</string>
+    <string name="need_assistance">Need assistance?</string>
+    <string name="sos">SOS</string>
+    <string name="full_name">Full Name</string>
+    <string name="log_out">Log out</string>
+    <string name="user_id">User ID</string>
+    <string name="home">Home</string>
+    <string name="missions">Missions</string>
+    <string name="profile">Profile</string>
+    <string name="dronehub">Dronehub</string>
+    <string name="user_profile">User Profile</string>
+    <string name="change">Change</string>
+    <string name="change_password">Change Password</string>
+    <string name="title_activity_create_mission">CreateMissionActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+</resources>

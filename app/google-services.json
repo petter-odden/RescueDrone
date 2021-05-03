@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1024813399448",
+    "project_id": "rescuedrone-6c5d7",
+    "storage_bucket": "rescuedrone-6c5d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024813399448:android:09b8f477cac7446befbfed",
+        "android_client_info": {
+          "package_name": "com.example.rescuedrone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024813399448-ogqdo09n9s3rhrml558o8krtj8iuqpu6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rescuedrone",
+            "certificate_hash": "d15b6963f010bafc336da434dc405e2157ebe885"
+          }
+        },
+        {
+          "client_id": "1024813399448-6b3as8jggakqduuh7an8p1dn9o05ikjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfJtnDrPQRz7eZpL7ORB3B9SQcNpjT4UE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024813399448-6b3as8jggakqduuh7an8p1dn9o05ikjn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
