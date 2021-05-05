@@ -58,16 +58,18 @@
             android:layout_margin="8dp"
             android:orientation="horizontal">
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_view_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="Action 1"
+                android:text="View more"
                 style="?attr/borderlessButtonStyle"
                 />
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_push_dronehub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Action 2"
+                android:text="Push to dronehub"
                 style="?attr/borderlessButtonStyle"
                 />
         </LinearLayout>

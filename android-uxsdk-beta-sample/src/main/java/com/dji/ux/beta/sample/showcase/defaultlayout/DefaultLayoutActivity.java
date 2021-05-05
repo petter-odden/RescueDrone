@@ -34,6 +34,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.dji.mapkit.core.models.DJILatLng;
+import com.dji.mapkit.core.models.annotations.DJIMarkerOptions;
 import com.dji.ux.beta.sample.R;
 
 import butterknife.BindView;
@@ -95,6 +97,9 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     private int deviceHeight;
     private CompositeDisposable compositeDisposable;
     private UserAccountLoginWidget userAccountLoginWidget;
+    private DJILatLng missionCoordinates;
+
+
     //endregion
 
     //region Lifecycle
@@ -102,6 +107,19 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_layout);
+
+        if (getIntent().hasExtra("missionLatitude")) {
+
+            String missionLatitude = getIntent().getStringExtra("missionLatitude");
+            String missionLongitude = getIntent().getStringExtra("missionLongitude");
+
+
+            double coordinateLat = Double.parseDouble(missionLatitude);
+            double coordinateLng = Double.parseDouble(missionLongitude);
+
+            missionCoordinates = new DJILatLng(coordinateLat,coordinateLng);
+        }
+
 
         widgetHeight = (int) getResources().getDimension(R.dimen.mini_map_height);
         widgetWidth = (int) getResources().getDimension(R.dimen.mini_map_width);
@@ -116,6 +134,14 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         mapWidget.initGoogleMap(map -> {
             map.setOnMapClickListener(latLng -> onViewClick(mapWidget));
             map.getUiSettings().setZoomControlsEnabled(false);
+
+            // Adding a marker for the mission location
+            if (missionCoordinates != null) {
+                DJIMarkerOptions options = new DJIMarkerOptions();
+                options.position(missionCoordinates);
+                map.addMarker(options);
+            }
+
         });
         mapWidget.getUserAccountLoginWidget().setVisibility(View.GONE);
         mapWidget.onCreate(savedInstanceState);

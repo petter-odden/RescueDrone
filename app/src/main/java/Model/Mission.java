@@ -1,12 +1,14 @@
 package Model;
 
+import com.google.maps.model.LatLng;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 
 public class Mission {
     private String title;
-    private String location;
+    private LatLng location;
     private String description;
     private String uid;
     private User creatorUser;
@@ -21,7 +23,7 @@ public class Mission {
 
     private HashMap<String, User> hiredPeople;
 
-    public Mission(String title, String location, String description, String uid, User creatorUser, Date creationTime, boolean lookingForAllPeople, boolean lookingForQualifiedPeople, boolean hideMission, int priorityLevel) {
+    public Mission(String title, LatLng location, String description, String uid, User creatorUser, Date creationTime, boolean lookingForAllPeople, boolean lookingForQualifiedPeople, boolean hideMission, int priorityLevel) {
         this.title = title;
         this.location = location;
         this.description = description;
@@ -61,7 +63,7 @@ public class Mission {
         return title;
     }
 
-    public String getLocation() {
+    public LatLng getLocation() {
         return location;
     }
 
@@ -73,7 +75,7 @@ public class Mission {
         this.title = title;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(LatLng location) {
         this.location = location;
     }
 

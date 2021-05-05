@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rescuedrone.R;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,17 @@ import Model.Mission;
 public class MissionListAdapter extends RecyclerView.Adapter<MissionListAdapter.MissionListViewHolder> {
 
     ArrayList<Mission> aList;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
     Context context;
 
     public MissionListAdapter(ArrayList<Mission> aList, Context context) {
@@ -29,7 +41,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<MissionListAdapter.
     @Override
     public MissionListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.mission_list_item, parent, false);
-        return new MissionListViewHolder(v);
+        return new MissionListViewHolder(v, mListener);
     }
 
     @Override
@@ -37,7 +49,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<MissionListAdapter.
 
         Mission mission = aList.get(position);
         holder.title.setText(mission.getTitle());
-        holder.location.setText(mission.getLocation());
+        holder.location.setText(Double.toString(mission.getLocation().lat) + " " + Double.toString(mission.getLocation().lng));
         holder.description.setText(mission.getDescription());
 
     }
@@ -50,12 +62,39 @@ public class MissionListAdapter extends RecyclerView.Adapter<MissionListAdapter.
     public static class MissionListViewHolder extends RecyclerView.ViewHolder {
 
         TextView title, location, description;
+        MaterialButton btnViewMore, btnPushDronehub;
 
-        public MissionListViewHolder(@NonNull View itemView) {
+        public MissionListViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
+
+
             title = itemView.findViewById(R.id.tv_title);
             location = itemView.findViewById(R.id.tv_location);
             description = itemView.findViewById(R.id.tv_description);
+            btnViewMore = itemView.findViewById(R.id.btn_view_more);
+            btnPushDronehub = itemView.findViewById(R.id.btn_push_dronehub);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            btnPushDronehub.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+
+
         }
     }
 }

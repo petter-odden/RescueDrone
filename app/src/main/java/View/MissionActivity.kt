@@ -3,20 +3,20 @@ package View
 import Controller.MissionListAdapter
 import Model.Mission
 import Model.User
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rescuedrone.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
-import com.example.rescuedrone.R
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -40,9 +40,10 @@ class MissionActivity : AppCompatActivity() {
         val newAssignmentButton : FloatingActionButton = findViewById(R.id.btnNewAssignment)
 
 
+
         //region Getting the user object from firebase
         database = FirebaseDatabase.getInstance("https://rescuedrone-6c5d7-default-rtdb.europe-west1.firebasedatabase.app/").getReference(
-            "users"
+                "users"
         ).child(firebaseUser?.uid.toString())
         val userListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -60,20 +61,23 @@ class MissionActivity : AppCompatActivity() {
 
         newAssignmentButton.setOnClickListener() {
             val intent = Intent(this@MissionActivity, CreateMissionActivity::class.java)
-            intent.putExtra("user",user)
+            intent.putExtra("user", user)
             startActivity(intent)
         }
 
 
 
+
+        //region RecyclerView setup
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val adapter = MissionListAdapter(list, this)
         recyclerView.adapter = adapter
         val missionReference = FirebaseDatabase.getInstance("https://rescuedrone-6c5d7-default-rtdb.europe-west1.firebasedatabase.app/").getReference(
-            "missions"
+                "missions"
         )
+
         val missionListener = object : ValueEventListener {
             override fun onDataChange(dataSnapsot: DataSnapshot) {
                 for(missionSnapshot : DataSnapshot in dataSnapsot.children) {
@@ -91,8 +95,35 @@ class MissionActivity : AppCompatActivity() {
         }
         missionReference.addValueEventListener(missionListener)
 
+        adapter.setOnItemClickListener(object : MissionListAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val mapPosition = list[position]
+                val missionLatitide = mapPosition.location.lat.toString()
+                val missionLongitude = mapPosition.location.lng.toString()
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.putExtra("missionLatitude", missionLatitide)
+                intent.putExtra("missionLongitude", missionLongitude)
+
+                // Always use string resources for UI text.
+                // This says something like "Share this photo with"
+                val title = "Choose"
+                // Create intent to show chooser
+                val chooser = Intent.createChooser(intent, title)
+
+                // Try to invoke the intent.
+                try {
+                    startActivity(chooser)
+                } catch (e: ActivityNotFoundException) {
+                    // Define what your app should do if no activity can handle the intent.
+                }
+            }
+        })
+        //endregion
 
 
+
+
+        //region Bottom navigation
         val bottomNav : BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNav.menu.findItem(R.id.missions).isChecked = true;
 
@@ -132,6 +163,7 @@ class MissionActivity : AppCompatActivity() {
             }
             true
         }
+        //endregion
     }
 
 

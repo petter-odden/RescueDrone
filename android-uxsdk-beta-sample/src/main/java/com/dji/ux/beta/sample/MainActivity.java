@@ -76,7 +76,12 @@ import dji.ux.beta.core.util.SettingDefinitions;
  * shows the current connection state and displays logs for the different steps of the SDK
  * registration process.
  */
+
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+
+
+    String missionLatitude;
+    String missionLongitude;
 
     //region Constants
     private static final String LAST_USED_BRIDGE_IP = "bridgeip";
@@ -214,6 +219,18 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        missionLatitude = getIntent().getStringExtra("missionLatitude");
+        missionLongitude = getIntent().getStringExtra("missionLongitude");
+
+        TextView tvMissionLocation = findViewById(R.id.text_view_mission_location);
+
+        tvMissionLocation.setText("Mission location: \n" + missionLatitude + " " + missionLongitude);
+        if (missionLatitude == null || missionLongitude == null) {
+            tvMissionLocation.setText("Mission location: \n N/A");
+        }
+
+
         ButterKnife.bind(this);
         isAppStarted = true;
         checkAndRequestPermissions();
@@ -361,7 +378,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     @OnClick(R.id.default_layout_button)
     public void onDefaultLayoutClick() {
         Intent intent = new Intent(this, DefaultLayoutActivity.class);
+
+        if (missionLatitude != null && missionLongitude != null) {
+            intent.putExtra("missionLongitude", missionLongitude);
+            intent.putExtra("missionLatitude", missionLatitude);
+        }
         startActivity(intent);
+
+
     }
 
     @OnClick(R.id.widget_list)
