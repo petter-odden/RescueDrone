@@ -124,7 +124,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/showcase"
+                    android:text="DRONEHUB"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
@@ -142,7 +142,7 @@
                     android:textColor="@color/black" />
 
                 <TextView
-                    android:id="@+id/widget_list"
+                    android:id="@+id/photos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -151,7 +151,7 @@
                     android:background="@color/white"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="@string/widget_list"
+                    android:text="Saved Images"
                     android:textColor="@color/black" />
 
                 <TextView

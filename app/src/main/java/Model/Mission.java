@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 public class Mission {
+    private static int increment = 0;
+    private int missionID;
     private String title;
     private LatLng location;
     private String description;
@@ -23,7 +25,10 @@ public class Mission {
 
     private HashMap<String, User> hiredPeople;
 
+
+
     public Mission(String title, LatLng location, String description, String uid, User creatorUser, Date creationTime, boolean lookingForAllPeople, boolean lookingForQualifiedPeople, boolean hideMission, int priorityLevel) {
+        this.missionID = increment++;
         this.title = title;
         this.location = location;
         this.description = description;
@@ -153,6 +158,10 @@ public class Mission {
 
     public void removePersonell(String personUid){ //Removes person based on UID, overloaded to also take user object
         this.hiredPeople.remove(personUid);
+    }
+
+    public int getMissionID() {
+        return missionID;
     }
 }
 

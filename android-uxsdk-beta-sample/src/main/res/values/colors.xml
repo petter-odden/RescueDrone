@@ -35,7 +35,11 @@
     <color name="light_gray">#B3FFFFFF</color>
     <color name="dark_gray">#80000000</color>
     <color name="transparent">#00000000</color>
+    <color name="transparent_50">#50000000</color>
     <color name="gray_45">#727272</color>
     <color name="light_gray_50">#F7F9FA</color>
     <color name="light_gray_300">#BABDBF</color>
+    <color name="black_overlay">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="blue">#03A9F4</color>
 </resources>

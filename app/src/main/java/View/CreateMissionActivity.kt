@@ -139,8 +139,9 @@ class CreateMissionActivity : AppCompatActivity() {
             database.setValue(mission).addOnSuccessListener() {
                 Toast.makeText(this, "Mission added successfully", Toast.LENGTH_SHORT).show()
 
-                val intent = Intent(this, MissionActivity::class.java)
-                startActivity(intent)
+                finish()
+//                val intent = Intent(this, MissionActivity::class.java)
+//                startActivity(intent)
             }
         }
 

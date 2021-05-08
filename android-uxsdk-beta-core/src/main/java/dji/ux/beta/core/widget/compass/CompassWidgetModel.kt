@@ -29,8 +29,11 @@ import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationListener
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.Surface
 import android.view.WindowManager
+import androidx.annotation.NonNull
 import dji.common.remotecontroller.GPSData
 import dji.keysdk.DJIKey
 import dji.keysdk.FlightControllerKey
@@ -244,7 +247,12 @@ class CompassWidgetModel(djiSdkModel: DJISDKModel,
         // Do nothing
     }
 
-    override fun onLocationChanged(location: Location?) {
+
+//    override fun onLocationChanged(locations: MutableList<Location>) {
+//        // Do nothing
+//    }
+
+    override fun onLocationChanged(location: Location) {
         if (location != null) {
             // Update the center type to be the RC/Mobile device type
             centerTypeProcessor.onNext(CenterType.RC_MOBILE_GPS)
@@ -421,5 +429,5 @@ class CompassWidgetModel(djiSdkModel: DJISDKModel,
             var gimbalHeading: Float,
             var centerType: CenterType
     )
-    //endregion
+
 }

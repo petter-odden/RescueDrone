@@ -109,7 +109,6 @@ class LoginRegister : AppCompatActivity() {
     }
 
     fun writeNewUser(userId: String, user: User) {
-        // Todo: Få denne dritten til å funke
         //user = User(fName, lName, email)
 
         database = FirebaseDatabase.getInstance("https://rescuedrone-6c5d7-default-rtdb.europe-west1.firebasedatabase.app/").getReference("users").child(userId)

@@ -24,6 +24,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     lintOptions {
@@ -37,6 +38,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         multiDexEnabled true
+        versionCode 1
         vectorDrawables.useSupportLibrary = true
         ndk {
             // On x86 devices that run Android API 23 or above, if the application is targeted with API 23 or
@@ -113,6 +115,8 @@ dependencies {
          */
         // exclude group: 'com.amap.api'
     })
+    implementation 'com.google.firebase:firebase-database:19.7.0'
+    implementation 'com.google.firebase:firebase-storage:19.2.2'
     compileOnly ('com.dji:dji-sdk-provided:4.14')
 
     // UXSDK dependencies
@@ -154,6 +158,9 @@ dependencies {
     implementation project(path: ':android-uxsdk-beta-training')
     implementation project(path: ':android-uxsdk-beta-visualcamera')
     implementation project(path: ':android-uxsdk-beta-flight')
+
+    implementation 'br.com.simplepass:loading-button-android:2.2.0'
+
 }
 repositories {
     mavenCentral()

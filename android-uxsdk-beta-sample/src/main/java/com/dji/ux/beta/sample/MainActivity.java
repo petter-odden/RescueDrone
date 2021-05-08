@@ -49,6 +49,7 @@ import androidx.core.content.ContextCompat;
 
 import com.dji.ux.beta.sample.showcase.defaultlayout.DefaultLayoutActivity;
 import com.dji.ux.beta.sample.showcase.map.MapWidgetActivity;
+import com.dji.ux.beta.sample.showcase.photos.CapturedPhotosActivity;
 import com.dji.ux.beta.sample.showcase.widgetlist.WidgetsActivity;
 import com.dji.ux.beta.sample.util.MapUtil;
 
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     String missionLatitude;
     String missionLongitude;
+    String missionID = "-1";
 
     //region Constants
     private static final String LAST_USED_BRIDGE_IP = "bridgeip";
@@ -222,11 +224,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         missionLatitude = getIntent().getStringExtra("missionLatitude");
         missionLongitude = getIntent().getStringExtra("missionLongitude");
+        missionID = getIntent().getStringExtra("missionID");
+
 
         TextView tvMissionLocation = findViewById(R.id.text_view_mission_location);
 
         tvMissionLocation.setText("Mission location: \n" + missionLatitude + " " + missionLongitude);
-        if (missionLatitude == null || missionLongitude == null) {
+
+        if (missionLatitude == null && missionLongitude == null) {
             tvMissionLocation.setText("Mission location: \n N/A");
         }
 
@@ -382,15 +387,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         if (missionLatitude != null && missionLongitude != null) {
             intent.putExtra("missionLongitude", missionLongitude);
             intent.putExtra("missionLatitude", missionLatitude);
+            intent.putExtra("missionID", missionID);
         }
         startActivity(intent);
 
 
     }
 
-    @OnClick(R.id.widget_list)
+    @OnClick(R.id.photos)
     public void onWidgetListClick() {
-        Intent intent = new Intent(this, WidgetsActivity.class);
+        Intent intent = new Intent(this, CapturedPhotosActivity.class);
         startActivity(intent);
     }
 

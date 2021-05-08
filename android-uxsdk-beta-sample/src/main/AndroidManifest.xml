@@ -110,6 +110,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".showcase.photos.CapturedPhotosActivity"
+            android:screenOrientation="landscape"/>
+
         <activity
             android:name=".showcase.widgetlist.WidgetsActivity"
             android:screenOrientation="sensorLandscape" />

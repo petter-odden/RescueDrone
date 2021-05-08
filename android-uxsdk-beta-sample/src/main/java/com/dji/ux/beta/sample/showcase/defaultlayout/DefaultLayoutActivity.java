@@ -23,32 +23,62 @@
 
 package com.dji.ux.beta.sample.showcase.defaultlayout;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.amap.api.maps.model.Marker;
 import com.dji.mapkit.core.models.DJILatLng;
 import com.dji.mapkit.core.models.annotations.DJIMarkerOptions;
+import com.dji.ux.beta.sample.Intel;
 import com.dji.ux.beta.sample.R;
+import com.dji.ux.beta.sample.SampleApplication;
+import com.dji.ux.beta.sample.showcase.photos.DemoApplication;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import org.jetbrains.annotations.NotNull;
 
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dji.common.airlink.PhysicalSource;
+import dji.common.camera.SettingsDefinitions;
+import dji.common.error.DJIError;
+import dji.common.flightcontroller.FlightControllerState;
+import dji.common.flightcontroller.LocationCoordinate3D;
 import dji.common.product.Model;
+import dji.common.util.CommonCallbacks;
+import dji.sdk.base.BaseProduct;
+import dji.sdk.camera.Camera;
+import dji.sdk.flightcontroller.FlightController;
+import dji.sdk.products.Aircraft;
+import dji.sdk.sdkmanager.DJISDKManager;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.thirdparty.io.reactivex.disposables.CompositeDisposable;
+import dji.thirdparty.io.reactivex.disposables.Disposable;
+import dji.thirdparty.io.reactivex.disposables.Disposables;
 import dji.ux.beta.accessory.widget.rtk.RTKWidget;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
 import dji.ux.beta.core.extension.ViewExtensions;
 import dji.ux.beta.core.panel.systemstatus.SystemStatusListPanelWidget;
+import dji.ux.beta.core.panel.telemetry.TelemetryPanelWidget;
 import dji.ux.beta.core.panel.topbar.TopBarPanelWidget;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
@@ -60,6 +90,8 @@ import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget;
 import dji.ux.beta.core.widget.useraccount.UserAccountLoginWidget;
 import dji.ux.beta.map.widget.map.MapWidget;
 import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 /**
  * Displays a sample layout of widgets similar to that of the various DJI apps.
@@ -97,8 +129,16 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     private int deviceHeight;
     private CompositeDisposable compositeDisposable;
     private UserAccountLoginWidget userAccountLoginWidget;
-    private DJILatLng missionCoordinates;
 
+
+    private DJILatLng missionCoordinates;
+    private CircularProgressButton btnSendIntel;
+    private double droneLocationLat = 181, droneLocationLng = 181;
+    private LocationCoordinate3D droneLocation;
+    private Marker droneMarker = null;
+    private FlightController mFlightController;
+    private DatabaseReference mDatabase;
+    private String missionID = "";
 
     //endregion
 
@@ -110,16 +150,26 @@ public class DefaultLayoutActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra("missionLatitude")) {
 
-            String missionLatitude = getIntent().getStringExtra("missionLatitude");
-            String missionLongitude = getIntent().getStringExtra("missionLongitude");
+            double missionLatitude = Double.parseDouble(getIntent().getStringExtra("missionLatitude"));
+            double missionLongitude = Double.parseDouble(getIntent().getStringExtra("missionLongitude"));
 
+            missionID = getIntent().getStringExtra("missionID");
+            missionCoordinates = new DJILatLng(missionLatitude,missionLongitude);
 
-            double coordinateLat = Double.parseDouble(missionLatitude);
-            double coordinateLng = Double.parseDouble(missionLongitude);
-
-            missionCoordinates = new DJILatLng(coordinateLat,coordinateLng);
         }
 
+
+        btnSendIntel = findViewById(R.id.btn_send_intel);
+        btnSendIntel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendIntel();
+            }
+        });
+
+        if (DJISDKManager.getInstance().getProduct() == null || missionID.equals("")) {
+            btnSendIntel.setVisibility(View.INVISIBLE);
+        }
 
         widgetHeight = (int) getResources().getDimension(R.dimen.mini_map_height);
         widgetWidth = (int) getResources().getDimension(R.dimen.mini_map_width);
@@ -169,9 +219,38 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         userAccountLoginWidget.setLayoutParams(params);
     }
 
+
+    private void sendIntel() {
+
+        BaseProduct product = DJISDKManager.getInstance().getProduct();
+        if (product != null && product.isConnected()) {
+            if (product instanceof Aircraft) {
+                mFlightController = ((Aircraft) product).getFlightController();
+                droneLocation = mFlightController.getState().getAircraftLocation();
+            }
+        }
+
+
+        // Todo: Add image support in Intel
+        droneLocationLat = droneLocation.getLatitude();
+        droneLocationLng = droneLocation.getLongitude();
+        int intelID = Integer.parseInt(missionID);
+
+        Intel intel = new Intel(droneLocationLat, droneLocationLng, intelID);
+        mDatabase = FirebaseDatabase.getInstance("https://rescuedrone-6c5d7-default-rtdb.europe-west1.firebasedatabase.app/").getReference("intel/" + missionID).push();
+        mDatabase.setValue(intel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Intel added successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     @Override
     protected void onDestroy() {
         mapWidget.onDestroy();
+
         super.onDestroy();
     }
 
@@ -394,4 +473,5 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         }
     }
     //endregion
+
 }

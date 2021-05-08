@@ -36,7 +36,13 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:uxsdk_onStateChange="@+id/widget_fpv_interaction" />
+        app:uxsdk_onStateChange="@+id/widget_fpv_interaction" >
+
+        <dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget
+            android:id="@+id/widget_fpv_interaction"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </dji.ux.beta.core.widget.fpv.FPVWidget>
 
     <View
         android:layout_width="0dp"
@@ -64,13 +70,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.2" />
-
-    <dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget
-        android:id="@+id/widget_fpv_interaction"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <dji.ux.beta.core.widget.radar.RadarWidget
         android:id="@+id/widget_radar"
@@ -276,6 +275,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintStart_toStartOf="parent" />
+
+
+    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+        android:id="@+id/btn_send_intel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/transparent_50"
+        android:text="Send intel"
+        android:textColor="@color/gray_45"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/widget_map" />
 
     <dji.ux.beta.core.panel.telemetry.TelemetryPanelWidget
         android:id="@+id/widget_flight_telemetry"

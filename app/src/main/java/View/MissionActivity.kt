@@ -1,17 +1,24 @@
 package View
 
 import Controller.MissionListAdapter
+import Model.Intel
 import Model.Mission
 import Model.User
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rescuedrone.R
+import com.firebase.ui.database.FirebaseListAdapter
+import com.firebase.ui.database.FirebaseListOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -30,6 +37,8 @@ class MissionActivity : AppCompatActivity() {
     private lateinit var user : User
     private var firebaseUser : FirebaseUser? = auth.currentUser
     val list : ArrayList<Mission> = arrayListOf()
+    lateinit var intelAdapter: FirebaseListAdapter<Intel>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +92,7 @@ class MissionActivity : AppCompatActivity() {
                 for(missionSnapshot : DataSnapshot in dataSnapsot.children) {
                     missionSnapshot.value
                     val mission = missionSnapshot.getValue<Mission>()!!
+
                     list.add(mission)
                 }
                 adapter.notifyDataSetChanged()
@@ -96,13 +106,15 @@ class MissionActivity : AppCompatActivity() {
         missionReference.addValueEventListener(missionListener)
 
         adapter.setOnItemClickListener(object : MissionListAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
+            override fun onPushToDronehub(position: Int) {
                 val mapPosition = list[position]
-                val missionLatitide = mapPosition.location.lat.toString()
+                val missionLatitude = mapPosition.location.lat.toString()
                 val missionLongitude = mapPosition.location.lng.toString()
+                val missionID = mapPosition.missionID.toString()
                 val intent = Intent(Intent.ACTION_SEND)
-                intent.putExtra("missionLatitude", missionLatitide)
+                intent.putExtra("missionLatitude", missionLatitude)
                 intent.putExtra("missionLongitude", missionLongitude)
+                intent.putExtra("missionID", missionID)
 
                 // Always use string resources for UI text.
                 // This says something like "Share this photo with"
@@ -116,6 +128,60 @@ class MissionActivity : AppCompatActivity() {
                 } catch (e: ActivityNotFoundException) {
                     // Define what your app should do if no activity can handle the intent.
                 }
+            }
+
+            override fun onViewIntel(position: Int) {
+                val mapPosition = list[position]
+                val missionID = mapPosition.missionID
+
+
+                val builder = MaterialAlertDialogBuilder(this@MissionActivity)
+                val inflater = layoutInflater
+                builder.setTitle("Mission Intel")
+                val dialogueLayout = inflater.inflate(R.layout.intel_dialogue, null)
+                builder.setView(dialogueLayout)
+
+                val intelList: ListView = dialogueLayout.findViewById(R.id.intel_list)
+                var intel: Intel
+
+//                database = FirebaseDatabase.getInstance("https://rescuedrone-6c5d7-default-rtdb.europe-west1.firebasedatabase.app/").getReference("intel/$missionID")
+//                val intelListener = object : ValueEventListener {
+//                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                        dataSnapshot.value
+//                        intel = dataSnapshot.getValue<Intel>()!!
+//                    }
+//
+//                    override fun onCancelled(databaseError: DatabaseError) {
+//                        // Getting user failed, log a message
+//                        Log.w(TAG, databaseError.message, databaseError.toException())
+//                    }
+//                }
+//                database.addValueEventListener(userListener)
+
+                val query: Query = FirebaseDatabase.getInstance("https://rescuedrone-6c5d7-default-rtdb.europe-west1.firebasedatabase.app/").getReference("intel/$missionID")
+                val options = FirebaseListOptions.Builder<Intel>()
+                        .setLayout(R.layout.intel_list_item)
+                        .setQuery(query, Intel::class.java)
+                        .build()
+
+                intelAdapter = object : FirebaseListAdapter<Intel>(options) {
+                    override fun populateView(v: View, model: Intel, position: Int) {
+                        // Bind the Chat to the view
+                        val tvIntelCoordinates: TextView = v.findViewById(R.id.tv_coordinates)
+                        tvIntelCoordinates.text = model.droneLat.toString() + "\n" + model.droneLng.toString()
+
+                    }
+                }
+
+                intelList.adapter = intelAdapter
+
+                intelAdapter.startListening()
+
+                builder.setNegativeButton("Close") { _, _ ->
+
+                }
+
+                builder.show()
             }
         })
         //endregion
@@ -165,8 +231,6 @@ class MissionActivity : AppCompatActivity() {
         }
         //endregion
     }
-
-
 
     fun getFirebaseUser(): FirebaseUser? {
         return firebaseUser

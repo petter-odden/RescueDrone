@@ -22,7 +22,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<MissionListAdapter.
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onPushToDronehub(int position);
+        void onViewIntel(int position);
 
     }
 
@@ -51,7 +52,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<MissionListAdapter.
         holder.title.setText(mission.getTitle());
         holder.location.setText(Double.toString(mission.getLocation().lat) + " " + Double.toString(mission.getLocation().lng));
         holder.description.setText(mission.getDescription());
-
+        
     }
 
     @Override
@@ -81,13 +82,25 @@ public class MissionListAdapter extends RecyclerView.Adapter<MissionListAdapter.
                 }
             });
 
+            btnViewMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onViewIntel(position);
+                        }
+                    }
+                }
+            });
+
             btnPushDronehub.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
+                            listener.onPushToDronehub(position);
                         }
                     }
                 }
